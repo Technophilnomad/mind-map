@@ -1,0 +1,23 @@
+{
+  "name": "mind-map",
+  "version": "1.0.0",
+  "description": "This is an app that helps to create mind maps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Technophilnomad/mind-map.git"
+  },
+  "keywords": [
+    "mind",
+    "map"
+  ],
+  "author": "technophilenomads@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Technophilnomad/mind-map/issues"
+  },
+  "homepage": "https://github.com/Technophilnomad/mind-map#readme"
+}
