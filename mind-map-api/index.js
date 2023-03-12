@@ -8,6 +8,7 @@ const app = express();
 mongoose.connect('mongodb://localhost/mindmap', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  
 });
 
 // define node schema
@@ -18,6 +19,20 @@ const nodeSchema = new mongoose.Schema({
 });
 
 const Node = mongoose.model('Node', nodeSchema);
+
+// CORS middleware
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Allow all origins
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
+// CORS preflight middleware
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+  res.send();
+});
+
 
 // parse JSON requests
 app.use(bodyParser.json());
@@ -33,6 +48,18 @@ app.post('/api/nodes', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send('Error creating node');
+  }
+});
+
+// API endpoint to get all nodes
+app.get('/api/nodes', async (req, res) => {
+  try {
+    const nodes = await Node.find();
+    res.json(nodes);
+    console.log("fetched details of nodes")
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error retrieving nodes');
   }
 });
 
@@ -61,6 +88,14 @@ app.delete('/api/nodes/:id', async (req, res) => {
     console.error(err);
     res.status(500).send('Error deleting node');
   }
+});
+
+// API endpoint to check health and Database connection
+app.get('/health', (req, res) => {
+    const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+    const healthStatus = { status: 'ok', database: dbStatus };
+    res.json(healthStatus);
+    console.log(healthStatus)
 });
 
 // start the server
